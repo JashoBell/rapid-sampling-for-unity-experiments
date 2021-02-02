@@ -1,5 +1,5 @@
-# Rapid VRPN Sampling Solution for Unity
-Uses VRPN Unity plugin commands in an adjacent thread to sample positional data independently of Unity's framerate through an additional thread.
+# Rapid VRPN Sampling Solution for Unity-based Experiments
+Uses VRPN plugin commands to sample positional data independently of Unity's framerate through an additional thread. Records these sampled positions into a list of rows, which are then compiled into a table at the end of an experimental trial.
 
 Made with [UXF 2.1.1](https://github.com/immersivecognition/unity-experiment-framework) and Unity 2020.2.1f1, UnityVrpn dll from [hendrik-schulte/UVRPN](https://github.com/hendrik-schulte/UVRPN). [Virtual Reality Peripheral Network (VRPN)]() is an open-source framework for spatially tracking and representing a wide variety of VR peripherals.
 
