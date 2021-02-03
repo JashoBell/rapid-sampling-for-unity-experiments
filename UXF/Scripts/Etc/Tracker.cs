@@ -70,7 +70,7 @@ namespace UXF
         /// </summary>
         [Tooltip("When the measurements should be taken.\n\nManual should only be selected if the user is calling the RecordRow method either from another script or a custom Tracker class.")]
         public TrackerUpdateType updateType = TrackerUpdateType.LateUpdate;
-        public TrackerType trackerType = TrackerType.Other;
+
 
         // called when component is added
         void Reset()
@@ -99,6 +99,7 @@ namespace UXF
         {
             if (!recording) throw new System.InvalidOperationException("Tracker measurements cannot be taken when not in a trial!");
             
+            // If FastUpdate, time is included already (as ticks)
             if(updateType != TrackerUpdateType.fastUpdate){
                  UXFDataRow newRow = GetCurrentValues();
                  newRow.Add(("time", Time.unscaledTime));
@@ -143,10 +144,5 @@ namespace UXF
     public enum TrackerUpdateType
     {
         LateUpdate, FixedUpdate, Manual, fastUpdate, guiUpdate
-    }
-
-        public enum TrackerType
-    {
-        Positional, Eye, Other
     }
 }

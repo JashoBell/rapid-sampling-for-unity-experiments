@@ -22,13 +22,14 @@ namespace UXF
         public string vrpn_Address = "localhost";
 
         /// <summary>
-        /// iterates each loop to determine the number of times the loop runs/second.
-        /// </summary>
-        public int sampleCount;
-        /// <summary>
         /// Should reflect your desired sample rate in the inspector window.
         /// </summary>
         public int ThreadedUpdatesPerSecond;
+
+        /// <summary>
+        /// Indicates the number of samples taken during a particular trial.
+        /// </summary>
+        public int sampleCount;
 
         /// <summary>
         /// Channel of VRPN tracker you are sampling from (IR light ID for PPT)
@@ -67,25 +68,33 @@ namespace UXF
         {
             // List of UXF Data Rows, with rows added after each sample.
             List<UXFDataRow> dataList = new List<UXFDataRow>();
+
             // Sets number of ticks for one second, for displaying samples/second.
             const int oneSecond = 10000000;
+
             // Time in ticks at start of recording.
             var time_2 = System.DateTime.UtcNow.Ticks;
+
             // Time in ticks for updating samples/second.
             var time_sampleRate = System.DateTime.UtcNow.Ticks;
-            sampleCount = 0;
+
+            // Count the number of samples
+            int loopCount = 0;
+
             // Bool, allowing for repetition and ending of while loop.
             bool trialOngoing = true;
+
             // Loop while the trial is ongoing- record data if recording, notify that trial has stopped if not recording.
             while(trialOngoing)
             {
             if(Recording)
             {
+
             // Update samples per second in the inspector.
             if (System.DateTime.UtcNow.Ticks - time_sampleRate >= oneSecond)
             {
-                ThreadedUpdatesPerSecond = sampleCount;
-                sampleCount = 0;
+                ThreadedUpdatesPerSecond = loopCount;
+                loopCount = 0;
                 time_sampleRate = System.DateTime.UtcNow.Ticks;
             }
             // Sample data as string arrays
@@ -108,18 +117,23 @@ namespace UXF
             
             // Sleep for 1000/recording rate (200hz = 5ms)
             Thread.Sleep(1000/recordRate);
+            loopCount++;
             sampleCount++;
             } 
+
             //When recording ends, if data has been collected, report the size and log that the thread has ended.
             else if(!Recording & dataList.Count>0){
             Utilities.UXFDebugLog("Size of dataList:" + dataList.Count.ToString());
             Utilities.UXFDebugLog("Thread finished. Recent position output below");
+
             // Check that the sampler is, in fact, sampling position.
             Utilities.UXFDebugLog(string.Join(" , ", vrpnUpdate.vrpnTrackerPos(vrpn_Address, vrpn_Channel)));
+
             // Send dataList clone to a public Array, report size and clear the thread's list.
             trialDataArray = dataList.ToArray();
             Utilities.UXFDebugLog("Size of trialdataList:" + trialDataArray.Length.ToString());
             dataList.Clear();
+
             // Change bool to break while loop.
             trialOngoing = false;}
             else{
@@ -156,9 +170,11 @@ namespace UXF
             recording = false;
             // Wait for thread to join, to ensure no combined writing of files occurs.
             collectData.Join();
+
             // Note number of samples taken, compare to length of trialDataList.
             Utilities.UXFDebugLog("Number of samples taken" + sampleCount.ToString());
             Utilities.UXFDebugLog("Size of trialdataList:" + trialDataArray.Length.ToString());
+
             // For each data row sampled, add to the trial's data. Notify entry into the for loop.
             foreach (UXFDataRow i in trialDataArray){
              if(data.CountRows() < 1){Utilities.UXFDebugLogWarning("Adding rows to data table.");}
