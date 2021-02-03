@@ -14,12 +14,12 @@ namespace UXF
         /// <summary>
         /// Rate at which you wish to record position (doesn't currently do anything, must set from VRPN_Update).
         /// </summary>
-        public static int recordRate = 200;
+        public int recordRate = 200;
 
         /// <summary>
         /// Address of the VRPN tracker you are sampling from (default for PPT is 3883)
         /// </summary>
-        public static string vrpn_Address = "3883";
+        public string vrpn_Address = "localhost";
 
         /// <summary>
         /// iterates each loop to determine the number of times the loop runs/second.
@@ -33,7 +33,7 @@ namespace UXF
         /// <summary>
         /// Channel of VRPN tracker you are sampling from (IR light ID for PPT)
         /// </summary>
-        public static int vrpn_Channel = 1;
+        public int vrpn_Channel = 0;
 
         /// <summary>
         /// Contains the UXFDataRows from the fastUpdate loop.
@@ -138,7 +138,7 @@ namespace UXF
             return new UXFDataRow();
 
         }
-        new public void StartRecording()
+        public override void StartRecording()
         {
             // Replaces top-level StartRecording().
             Utilities.UXFDebugLog("Recording Start");
@@ -151,7 +151,7 @@ namespace UXF
                 Utilities.UXFDebugLog("Thread Started.");
             }
         }
-        new public void StopRecording()
+        public override void StopRecording()
         {
             recording = false;
             // Wait for thread to join, to ensure no combined writing of files occurs.
