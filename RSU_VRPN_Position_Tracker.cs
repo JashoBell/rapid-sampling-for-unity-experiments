@@ -17,9 +17,15 @@ namespace UXF
         public int recordRate = 200;
 
         /// <summary>
+        /// Name of VRPN tracker you are sampling from (default for PPT is PPT0)
+        /// </summary>
+        public string vrpn_Trackername = "PPT0";
+
+        /// <summary>
         /// Address of the VRPN tracker you are sampling from (default for PPT is 3883)
         /// </summary>
         public string vrpn_Address = "localhost";
+        private string _address;
 
         /// <summary>
         /// Should reflect your desired sample rate in the inspector window.
@@ -32,7 +38,7 @@ namespace UXF
         public int sampleCount;
 
         /// <summary>
-        /// Channel of VRPN tracker you are sampling from (IR light ID for PPT)
+        /// Sensor ID of VRPN tracker you are sampling from (IR light ID for PPT)
         /// </summary>
         public int vrpn_Channel = 0;
 
@@ -45,7 +51,18 @@ namespace UXF
         /// </summary>
         private Thread collectData;
 
+ 
+        private string GetTrackerAddress(string vrpn_Trackername)
+        {
+            _address = "@" + vrpn_Address;
+            string fulladdress = vrpn_Trackername + _address;
+            return fulladdress;
+        }
 
+        /// <summary>
+        /// Assembles the tracker and hostname to a single string.
+        /// </summary>
+  
         protected override void SetupDescriptorAndHeader()
         {
             measurementDescriptor = "movement";
@@ -98,9 +115,10 @@ namespace UXF
                 time_sampleRate = System.DateTime.UtcNow.Ticks;
             }
             // Sample data as string arrays
-            string[] p = vrpnUpdate.vrpnTrackerPos(vrpn_Address, vrpn_Channel);
-            string[] r = vrpnUpdate.vrpnTrackerQuat(vrpn_Address, vrpn_Channel);
-            var time = System.DateTime.UtcNow.Ticks - time_2;
+            var time = System.DateTime.UtcNow.Ticks - time_2;            
+            string[] p = vrpnUpdate.vrpnTrackerPos(GetTrackerAddress(vrpn_Trackername), vrpn_Channel);
+            string[] r = vrpnUpdate.vrpnTrackerQuat(GetTrackerAddress(vrpn_Trackername), vrpn_Channel);
+
             
             //Add sample to list.
             dataList.Add(new UXFDataRow()
@@ -125,9 +143,10 @@ namespace UXF
             else if(!Recording & dataList.Count>0){
             Utilities.UXFDebugLog("Size of dataList:" + dataList.Count.ToString());
             Utilities.UXFDebugLog("Thread finished. Recent position output below");
+            sampleCount = 0;
 
             // Check that the sampler is, in fact, sampling position.
-            Utilities.UXFDebugLog(string.Join(" , ", vrpnUpdate.vrpnTrackerPos(vrpn_Address, vrpn_Channel)));
+            Utilities.UXFDebugLog(string.Join(" , ", vrpnUpdate.vrpnTrackerPos(GetTrackerAddress(vrpn_Trackername), vrpn_Channel)));
 
             // Send dataList clone to a public Array, report size and clear the thread's list.
             trialDataArray = dataList.ToArray();
@@ -155,7 +174,8 @@ namespace UXF
         public override void StartRecording()
         {
             // Replaces top-level StartRecording().
-            Utilities.UXFDebugLog("Recording Start");
+            Utilities.UXFDebugLog("Recording Start. Connecting to " + GetTrackerAddress(vrpn_Trackername) + " on channel " + vrpn_Channel.ToString());
+            Utilities.UXFDebugLog("Current position: " + string.Join(" , ", vrpnUpdate.vrpnTrackerPos(GetTrackerAddress(vrpn_Trackername), vrpn_Channel)));
             data = new UXFDataTable(header);
             recording = true;
             if(updateType == TrackerUpdateType.fastUpdate)
