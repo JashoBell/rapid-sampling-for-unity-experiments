@@ -7,10 +7,10 @@ The rapid sampling of data outside of Unity's main thread uses imported function
 ## Why?
 Unity is an incredibly useful environment for scripting experiments. However, the sampling of data from objects in Unity is capped at the refresh rate and linked to the delivery of frames as opposed to objective time. Having the sampling rate tied to Unity's framerate (for VR, typically 90hz) is not ideal when attempting to measure certain kinds of data, such as movement characteristics or reaction time, where milliseconds and sampling rate can be highly consequential. For example, the standard for movement science (although it may be excessive for certain applications) is typically reported at 200hz. To avoid Unity's limitations, it is necessary to use commands which don't interact with the Unity API.
 
-## Disclaimer of Ineptitude:
+## Disclaimer of Ineptitude
 I made this to fit my dissertation work's specific needs. I am not a programmer by trade, so this code is probably ugly, inefficient and easily broken. I've probably arranged the repository and readme like a dummy. The scripts probably need to be cleaned of comments or code they don't actually use/need. I'll work on these issues when I can and try to help with any specific problems, but I don't have a lot of domain knowledge to draw upon and am learning as I go. At the very least, I hope I'm saving someone at least a portion of the (excessive amount of) time I spent solving this problem by providing an example.
 
-## Required:
+## Required
 Unity
 [UVRPN](https://github.com/hendrik-schulte/UVRPN)
 [UXF](https://github.com/immersivecognition/unity-experiment-framework)
@@ -29,7 +29,7 @@ A running VRPN server with at least one position tracker
     9b. Stop after a couple of trials to ensure the recorded values are correct.
 
 
-## Common Problems:
+## Common Problems
 * Recordings of (-501, -501, -501) at every time point
     * Your script's options might not be pointing to the correct VRPN address/channel.
 
