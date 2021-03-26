@@ -19,7 +19,7 @@ A running VRPN server with at least one position tracker
 ## Quick-Start
 1. Have a VRPN-based tracker.
 2. Create a Unity project.
-3. Install UXF and UVPN.
+3. Install UXF and UVRPN.
 4. Download repo as .zip, unpack into Unity, replacing the relevant UXF files.
 5. Create an experiment with UXF, or use one of the example scenes (I used "Move to Target" while making this)
 6. Place the "VRPN_UXF_PosOri" script onto any GameObject.
