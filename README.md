@@ -11,10 +11,10 @@ Unity is an incredibly useful environment for scripting experiments. However, th
 I made this to fit my dissertation work's specific needs. I am not a programmer by trade, so this code is probably ugly, inefficient and easily broken. I've probably arranged the repository and readme like a dummy. The scripts probably need to be cleaned of comments or code they don't actually use/need. I'll work on these issues when I can and try to help with any specific problems, but I don't have a lot of domain knowledge to draw upon and am learning as I go. At the very least, I hope I'm saving someone at least a portion of the (excessive amount of) time I spent solving this problem by providing an example.
 
 ## Required
-Unity
-[UVRPN](https://github.com/hendrik-schulte/UVRPN)
-[UXF](https://github.com/immersivecognition/unity-experiment-framework)
-A running VRPN server with at least one position tracker
+* Unity  
+* [UVRPN](https://github.com/hendrik-schulte/UVRPN)  
+* [UXF](https://github.com/immersivecognition/unity-experiment-framework)  
+* A running VRPN server with at least one position tracker  
 
 ## Quick-Start
 1. Have a VRPN-based tracker.
