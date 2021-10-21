@@ -33,7 +33,12 @@ A running VRPN server with at least one position tracker
 * Recordings of (-501, -501, -501) at every time point
     * Your script's options might not be pointing to the correct VRPN address/channel.
 
+## Known issues/Planned updates
+* In its current form, the VRPN script does not scale well, and Unity will crash if you use more than one tracker at a time because it is not thread-safe.
+* SteamVR and Vive Pro Eye SRanipal eye-tracking scripts
+* I've fixed/added the above in my dissertation code and will update this repository with those changes soon(tm).
+
 ## Personal To Dos
-Generalize to other APIs (e.g., SteamVR, Pupil-labs)
-Optimize, make more safe and efficient.
-Determine the best route for scalability (multiple trackers).
+* Generalize to other APIs (e.g., SteamVR, Pupil-labs)
+* Optimize, make more safe and efficient.
+* Determine the best route for scalability (multiple trackers).
